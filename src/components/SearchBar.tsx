@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {getCocktailByName, getIngredientByName} from "../api/GetCocktails";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 interface SearchBarProps {
     searchResults: [];
@@ -11,9 +11,11 @@ interface SearchBarProps {
 const SearchBar: React.FC = () => {
 
     const [cocktailSearchResult, setCocktailSearchResult] = React.useState<[]>([]);
-    const [ingredientsSearchResult, setIngredientsSearchResult] = React.useState<[]>([]);
     const [searchTerm, setSearchTerm] = React.useState<string>("");
+    const [error, setError] = React.useState<Error | null>(null);
     const navigate = useNavigate();
+
+    if (error) throw error;
 
     useEffect(() => {
         if(searchTerm.length === 0) {
@@ -21,42 +23,28 @@ const SearchBar: React.FC = () => {
         }
     }, [searchTerm]);
 
+// Handling changes in the search input
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
-
+        // Fetching cocktails by name if the search term is at least one character long
         if (searchTerm.length >= 1) {
-            Promise.all([
-                getCocktailByName(searchTerm),
-                getIngredientByName(searchTerm)
-            ]).then(([cocktailResponse, ingredientResponse]) => {
-                setCocktailSearchResult(cocktailResponse);
-                setIngredientsSearchResult(ingredientResponse);
-            });
+            getCocktailByName(searchTerm)
+                .then((data) => setCocktailSearchResult(data))
+                .catch((error) => setError(error));
         }
     };
 
-
-    const handleResultClick = (clickedResult : string) => {
-        navigate(`/cocktail/${clickedResult}`)
-    };
-
+// Mapping through the cocktail search results to generate corresponding JSX elements
     const CocktailResultlist = cocktailSearchResult?.map((result: any) => {
         return (
-            <li key={result.idDrink} onClick={() => handleResultClick(result.idDrink)}>
-                {result.strDrink}
-            </li>
-        )
+            <Link to={`/cocktail/${result.idDrink}`}>
+                {/* Displaying the name of the cocktail */}
+                <li key={result.idDrink}>
+                    {result.strDrink}
+                </li>
+            </Link>
+        );
     });
-
-    const IngredientsResultlist = ingredientsSearchResult?.map((result: any) => {
-        return (
-            <li key={result.idIngredient} onClick={() => handleResultClick(result.idIngredient)}>
-                {result.strIngredient}
-            </li>
-        )
-    });
-
-
 
     return (
         <div className={"Searchbar"}>
@@ -67,35 +55,17 @@ const SearchBar: React.FC = () => {
                 placeholder={"search cocktails"}
                 value={searchTerm}
             />
-            {searchTerm && (CocktailResultlist || IngredientsResultlist) && (
+            <Link to={`/search/${searchTerm}`} className={"Search-btn"} onClick={() => setSearchTerm(searchTerm)}>OK</Link>
+            {searchTerm && (CocktailResultlist) && (
                 <ul>
                     {CocktailResultlist && (
                         <>
-                            <li className={"ul-name"}>Cocktails</li>
                             {CocktailResultlist}
-                        </>
-                    )}
-                    {IngredientsResultlist && (
-                        <>
-                            <li className={"ul-name"}>Ingredients</li>
-                            {IngredientsResultlist}
                         </>
                     )}
                 </ul>
             )}
-          {/*  {searchTerm && (CocktailResultlist || IngredientsResultlist) &&
-                <ul>
-                        <>
-                            <li className={"ul-name"}>Cocktails</li>
-                            {CocktailResultlist}
-                        </>
-                        <>
-                            <li className={"ul-name"}>Ingredients</li>
-                            {IngredientsResultlist}
-                        </>
-                </ul>
-            }*/}
-            {searchTerm && !CocktailResultlist && !IngredientsResultlist && (
+            {searchTerm && !CocktailResultlist && (
                 <ul>"No results"</ul>
             )}
         </div>

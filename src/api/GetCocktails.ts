@@ -1,22 +1,18 @@
 
 
 export async function getIngredientByName(name: string) {
+
     try {
         const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${name}`);
-
-        if (!response.ok) {
-            throw new Error(`Request failed with status: ${response.status}`);
-        }
-
         const data = await response.json();
+
+        console.log(data.drinks)
         return data.drinks;
-    } catch (error) {
-        //@ts-ignore
-        console.error("Error fetching ingredients:", error.message);
-        throw error;
+    }
+    catch (error : any) {
+       throw Error(error.message)
     }
 }
-
 
 export async function getCocktailByName(name: string) {
     try {
@@ -24,9 +20,8 @@ export async function getCocktailByName(name: string) {
         const data = await response.json();
         return data.drinks;
     }
-    catch (error) {
-        console.error("Error fetching cocktails:", error);
-
+    catch (error : any) {
+        throw Error(error.message)
     }
 }
 
@@ -37,8 +32,9 @@ export async function getCocktailsByGlass(glass: string) {
         const data = await response.json();
         return data.drinks;
     }
-    catch (error) {
-        console.error("Error fetching cocktails:", error);
+    catch (error : any) {
+        throw Error(error.message)
+
     }
 
 }
@@ -50,8 +46,8 @@ export async function getAllCocktails () {
         const data = await response.json();
         return data.drinks;
     }
-    catch (error) {
-        console.error("Error fetching cocktails:", error);
+    catch (error : any) {
+        throw Error(error.message)
     }
 }
 
@@ -62,8 +58,8 @@ export async function getCocktailsByIngredient(ingredient: string) {
         const data = await response.json();
         return data.drinks;
     }
-    catch (error) {
-        console.error("Error fetching cocktails:", error);
+    catch (error : any) {
+        throw Error(error.message)
     }
 
 }
@@ -75,20 +71,20 @@ export async function getCocktailsByCategory(category: string) {
         const data = await response.json();
         return data.drinks;
     }
-    catch (error) {
-        console.error("Error fetching cocktails:", error);
+    catch (error : any) {
+        throw Error(error.message)
     }
 }
 
-export async function getCocktailsById (id: string) {
+export async function getCocktailsById(id: string | undefined) {
 
     try {
         const response = await fetch(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${id}`);
         const data = await response.json();
         return data.drinks;
     }
-    catch (error) {
-        console.error("Error fetching cocktails:", error);
+    catch (error: any) {
+        throw Error(error.message)
     }
 }
 
@@ -99,9 +95,31 @@ export async function getCategories () {
         const data = await response.json();
         return data.drinks;
     }
-    catch (error) {
-        console.error("Error fetching cocktails:", error);
+    catch (error : any) {
+        throw Error(error.message)
     }
+}
 
+export async function getGlasses () {
 
+    try {
+        const response = await fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?g=list");
+        const data = await response.json();
+        return data.drinks;
+    }
+    catch (error : any) {
+        throw Error(error.message)
+    }
+}
+
+export async function getIngredients () {
+
+    try {
+        const response = await fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list");
+        const data = await response.json();
+        return data.drinks;
+    }
+    catch (error : any) {
+        throw Error(error.message)
+    }
 }

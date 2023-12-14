@@ -9,24 +9,23 @@ interface CategoriesProps {
 // @ts-ignore
 const Categories: React.FC<CategoriesProps> = ({ categories }) => {
 
-    const [isLoaded, setIsLoaded] = useState(false);
-
     const navigate = useNavigate();
+    const [isLoaded, setIsLoaded] = useState(false);
 
     useEffect(() => {
         if (categories) {
             setIsLoaded(true)
         }
+
     }, [categories]);
 
-    const handleCategoryClick = (clickedCategory: string) => {
-        navigate(`/cocktails/category/${clickedCategory}`);
-    }
 
-    // @ts-ignore
+    // Mapping through categories to create a list of JSX elements
     const categorieList = categories.map((categorie) => (
         <div key={categorie.strCategory}>
+            {/* Link to navigate to the specific category page */}
             <Link to={`/cocktails/category/${categorie.strCategory}`}>
+                {/* Displaying the category name */}
                 <h2>{categorie.strCategory}</h2>
             </Link>
         </div>

@@ -1,6 +1,8 @@
 import Layout from "./Layout";
 import React, {useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom";
+import CocktailCard from "./CocktailCard";
+import {getIngredients} from "../api/GetCocktails";
 
 type Ingredient = {
     strIngredient1: string;
@@ -9,12 +11,14 @@ type Ingredient = {
 
 const Ingredients : React.FC = () => {
 
-    const navigate = useNavigate();
     const [ingredients, setIngredients] = React.useState<Ingredient[]>([]);
     const [isLoaded, setIsLoaded] = React.useState(false);
+    const [error, setError] = React.useState<Error | null>(null);
+
+    if (error) throw error;
 
     useEffect(() => {
-        getIngredients();
+        getIngredients().then((ingredients) => setIngredients(ingredients)).catch((error) => setError(error));
     }, []);
 
     useEffect(() => {
@@ -23,14 +27,13 @@ const Ingredients : React.FC = () => {
         }
     }, [ingredients]);
 
-    const getIngredients = async () => {
-        const response = await fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list")
-        const data = await response.json();
-        await setIngredients(data.drinks)
-    }
 
+// Mapping through the list of ingredients to create links for each ingredient
     const ingredientsList = ingredients.map((ingredient) => (
-        <Link to={`/cocktails/ingredient/${ingredient.strIngredient1}`}> <h2 key={ingredient.strIngredient1}> {ingredient.strIngredient1}</h2> </Link>
+        <Link to={`/cocktails/ingredient/${ingredient.strIngredient1}`}>
+            {/* Displaying the ingredient name */}
+            <h2 key={ingredient.strIngredient1}> {ingredient.strIngredient1}</h2>
+        </Link>
     ));
 
 

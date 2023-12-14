@@ -1,6 +1,7 @@
 import Layout from "./Layout";
 import React, {useEffect} from "react";
 import {Link, useNavigate} from "react-router-dom";
+import {getGlasses} from "../api/GetCocktails";
 
 interface Glasses {
     strGlass: string;
@@ -10,16 +11,13 @@ const Glasses: React.FC = () => {
 
     const [glasses, setGlasses] = React.useState<Glasses[]>([]);
     const [isLoaded, setIsLoaded] = React.useState(false);
+    const [error, setError] = React.useState(null);
 
-    const navigate = useNavigate();
-    const getGlasses = async () => {
-        const response = await fetch("https://www.thecocktaildb.com/api/json/v1/1/list.php?g=list")
-        const data = await response.json();
-        await setGlasses(data.drinks)
-    }
+    if (error) throw error;
+
 
     useEffect(() => {
-        getGlasses();
+        getGlasses().then((data) => setGlasses(data)).catch((error) => setError(error));
     }, []);
 
     useEffect(() => {
@@ -30,9 +28,14 @@ const Glasses: React.FC = () => {
 
 
 
+    // Mapping through the list of glasses to create links for each glass
     const glassesList = glasses.map((glass) => (
-            <Link to={`/cocktails/glass/${glass.strGlass}`}><h2 key={glass.strGlass}>{glass.strGlass}</h2></Link>
+        <Link to={`/cocktails/glass/${glass.strGlass}`}>
+            {/* Displaying the glass name */}
+            <h2 key={glass.strGlass}>{glass.strGlass}</h2>
+        </Link>
     ));
+
 
     return (
         //@ts-ignore

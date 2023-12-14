@@ -1,26 +1,19 @@
 import "./CocktailCard.css";
 import { Cocktail } from "../App";
 import {FC, useEffect, useState} from "react";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 interface CocktailCardProps {
     cocktail: Cocktail;
 }
 
-
-
 const CocktailCard: FC<CocktailCardProps> = ({ cocktail }) => {
-    const navigate = useNavigate();
 
     const [isLoaded, setIsLoaded] = useState(false);
 
-
-
     useEffect(() => {
         if (cocktail) {
-            setTimeout(() => {
-                setIsLoaded(true);
-            }, 1000);
+            setIsLoaded(true);
         }
     }, [cocktail]);
 

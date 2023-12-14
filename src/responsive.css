@@ -1,0 +1,132 @@
+
+
+
+@media screen and (max-width: 1000px) {
+
+
+    .Header{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 10%;
+        margin-bottom: 30px;
+        gap: 10px;
+    }
+    nav{
+        display: flex;
+        height: 100%;
+        justify-content: space-between;
+        margin: auto;
+    }
+
+    .App .Home .CocktailsGrid{
+        overflow: auto;
+    }
+    nav ul{
+        display: flex;
+        list-style: none;
+        margin: auto;
+        gap: 20px;
+    }
+    .Searchbar{
+        margin: 8px auto auto;
+    }
+
+    .Home__section{
+        margin-bottom: 20px;
+    }
+
+
+}
+
+@media screen and (max-width: 670px) {
+
+    .App{
+        padding-top: 0;
+        overflow: hidden;
+    }
+
+    .Header{
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+        margin-top: 10px;
+        gap: 10px;
+    }
+    nav{
+        order: 3;
+    }
+    .Title{
+        order: 1;
+    }
+    .App .Home .CocktailsGrid{
+        overflow: auto;
+    }
+
+
+    .Searchbar{
+        width: 100%;
+        order: 2;
+    }
+
+    .Searchbar input{
+        width: 100%;
+    }
+
+    nav ul{
+        flex-direction: column;
+        gap: 0;
+        font-size: 0.6rem;
+    }
+
+    .Home{
+        overflow: auto !important;
+        padding-top: 0;
+        position: relative;
+        z-index: 0;
+        height: auto !important;
+        min-height: auto;
+    }
+
+    .Cocktail{
+        flex-direction: column;
+        justify-content: initial;
+        overflow: auto;
+    }
+    .Cocktail-image{
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .cocktail-content {
+        margin: auto;
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        text-align: center;
+    }
+}
+
+@media screen and (min-width: 1000px){
+
+    .Home .CocktailsGrid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(220px, 1fr));
+        gap: 30px;
+        margin: auto;
+        overflow: auto;
+    }
+
+}
+
+@media screen and (min-width: 1400px){
+
+    .CocktailsGrid {
+        display: grid;
+        gap: 30px;
+        margin: auto;
+        overflow: auto;
+    }
+
+}

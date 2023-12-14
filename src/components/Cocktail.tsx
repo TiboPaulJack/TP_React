@@ -6,38 +6,40 @@ import {getCocktailsById} from "../api/GetCocktails";
 
 const Cocktail: React.FC = () => {
 
-    // @ts-ignore
     const { id }  = useParams();
 
     const [cocktail, setCocktail] = React.useState<any>([]);
     const [isLoaded, setIsLoaded] = React.useState(false);
+    const [error, setError] = React.useState(null);
+
+    if (error) throw error;
 
     useEffect(() => {
-        // @ts-ignore
-        getCocktailsById(id).then((response) => {
-            setCocktail(response[0]);
-        });
+            getCocktailsById(id)
+                .then((response) => setCocktail(response[0]))
+                .catch((error) => {setError(error)});
         if (cocktail) setIsLoaded(true);
     }, []);
 
 
 
-
+    // Construct an array 'ingredients' from the 'cocktail' object's properties
     const ingredients = [];
     for (let i = 1; i <= 15; i++) {
         const ingredient = cocktail[`strIngredient${i}`];
         const measure = cocktail[`strMeasure${i}`];
+        // Check if 'ingredient' exists, then push a formatted string to 'ingredients' array
         if (ingredient) {
             ingredients.push(`${ingredient} - ${measure}`);
         }
     }
-
+    // Map the 'ingredients' array to HTML paragraphs with a class of "ingredients"
     const ingredientsList = ingredients.map((ingredient) => (
-        <p key={ingredient}>{ingredient}</p>
+        <p className={"ingredients"} key={ingredient}>{ingredient}</p>
     ));
 
+
     return (
-        // @ts-ignore
         <Layout>
             <div className="Cocktail">
                 {isLoaded ? (
@@ -47,10 +49,9 @@ const Cocktail: React.FC = () => {
                         </div>
                         <div className="cocktail-content">
                             <h1>{cocktail.strDrink}</h1>
-                            <p>{cocktail.strInstructions}</p>
+                            <p className={"instructions"}>{cocktail.strInstructions}</p>
                             {ingredientsList}
-                            <p>{cocktail.strAlcoholic}</p>
-                            <p>{cocktail.strGlass}</p>
+                            <p className={"glass"}> {cocktail.strGlass}</p>
                         </div>
                     </>
                 ) : (
