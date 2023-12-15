@@ -167,9 +167,13 @@ a:hover{
     transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
     cursor: pointer;
 }
+.Home__section h2:hover{
+    color: white !important;
+}
 .Home__section:hover{
     box-shadow: black 2px 2px 0 0;
     transform: translate(2px, 2px);
+    color: white !important;
 }
 
 
@@ -279,11 +283,12 @@ a:hover{
     height: 100%;
     object-fit: cover;
 }
+
 .cocktail-content{
-    margin: auto;
     width: 50%;
     display: FLEX;
     flex-direction: column;
+    overflow: auto;
     gap: 10px;
 }
 .cocktail-content h1{
